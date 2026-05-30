@@ -32,6 +32,11 @@
         </div>
 
         <div class="card">
+            <h2>Contagem Regressiva</h2>
+            <iframe src="https://indify.co/widgets/live/countdown/gVKjHQWhQM7BsOnQ0H42" class="countdown-widget"></iframe>
+        </div>
+
+        <div class="card">
             <h2>Convite Especial</h2>
             <p id="texto-carta" class="convite-texto">
                 Oiêê 💗<br><br>
@@ -116,7 +121,7 @@
             const novoTexto = adminCartaInput.value.replace(/\n/g, "<br>");
             localStorage.setItem("cartaTexto", novoTexto);
             textoCarta.innerHTML = novoTexto;
-            alert("Carta atualizada com sucesso! ✨");
+            alert("Carta updated com sucesso! ✨");
         }
 
         function carregarCartaSalva() {
