@@ -21,47 +21,32 @@
         </div>
 
         <div class="card">
-            <h2>Deixe um recado</h2>
-            <input id="guestName" placeholder="Seu nome">
-            <textarea id="guestMessage" placeholder="Escreva algo especial..."></textarea>
-            <button onclick="sendMessage()">Enviar</button>
-            <div id="messagesContainer"></div>
+            <h2>Deixe um recado 💌</h2>
+            <p style="margin-bottom: 20px;">
+                Para que eu possa ler seu carinho de qualquer lugar, clique no botão abaixo e deixe sua mensagem no meu formulário especial!
+            </p>
+            
+            <a href="https://forms.gle/RVQMcGbQrSnteH4dA" target="_blank" class="btn-forms">
+                Escrever Recado 
+            </a>
         </div>
 
         <div class="card">
             <h2>Convite Especial</h2>
             <p id="texto-carta" class="convite-texto">
-                
-                <br>
-                Oiêê 💗
-                <br>
-                Se você chegou até aqui, já ganhou um espacinho muito especial no meu coração.
+                Oiêê 💗<br><br>
+                Se você chegou até aqui, já ganhou um espacinho muito especial no meu coração.<br>
                 Esse site foi feito com carinho para guardar memórias, recadinhos e um pedacinho dessa fase tão importante da minha vida: meus 18 anos...<br>
                 Cada pessoa presente faz parte da minha história de alguma forma, e ter vocês comemorando comigo torna tudo ainda mais inesquecível.<br>
-                Espero que esse dia seja leve, divertido e cheio de momentos especiais pra guardar na memória.
-                Obrigada por cada abraço, mensagem, carinho e por fazer parte do meu universo.
-                Que essa nova fase venha cheia de sonhos, música, felicidade e pessoas incríveis ao meu redor.
-                
-                <br>
-
-                Com amor, Rebeca 💕
-
-                <br>
-
-                📞 Contato (caso precise):
-                
-                <br>
-
-                WhatsApp: (11) 98904-7453
-                
-                <br>
-
-                Instagram: @ik1ttyou
-
-                <br>
+                Espero que esse dia seja leve, divertido e cheio de momentos especiais pra guardar na memória.<br>
+                Obrigada por cada abraço, mensagem, carinho e por fazer parte do meu universo.<br>
+                Que essa nova fase venha cheia de sonhos, música, felicidade e pessoas incríveis ao meu redor.<br><br>
+                Com amor, Rebeca 💕<br><br>
+                📞 Contato (caso precise):<br><br>
+                WhatsApp: (11) 98904-7453<br><br>
+                Instagram: @ik1ttyou<br><br>
                 ✨ ATENÇÃO: abaixo você poderá acompanhar minha linha do tempo — uma pequena viagem desde os meus primeiros momentos até a versão de hoje 💗
             </p>
-
             <img src="convite.jpeg" id="convite-img" class="convite-jpeg" alt="convite de aniversário">
         </div>
 
@@ -86,14 +71,13 @@
 
         <div class="admin-card">
             <h3>Editar Carta</h3>
-            <textarea id="admin-carta" placeholder="Edite o texto da carta aqui..."></textarea>
+            <textarea id="admin-carta"></textarea>
             <button onclick="salvarCarta()">Salvar Carta</button>
         </div>
-
-        <div class="admin-card">
-            <h3>Mensagens Recebidas</h3>
-            <div id="admin-mensagens"></div>
-        </div>
+        
+        <p style="font-size: 12px; margin-top: 15px; color: #ff758f; text-align: center;">
+            * Os recados novos devem ser gerenciados diretamente pelo painel do seu Google Forms!
+        </p>
     </div>
 
     <script>
@@ -103,14 +87,12 @@
                 document.getElementById("loading").style.display = "none";
                 document.getElementById("main-content").classList.add("show-main");
             }, 2500);
-            mostrar();
             carregarCartaSalva();
         };
 
         /* ELEMENTOS */
         const adminIcon = document.getElementById("admin-icon");
         const adminPanel = document.getElementById("admin-panel");
-        const adminMensagens = document.getElementById("admin-mensagens");
         const textoCarta = document.getElementById("texto-carta");
         const adminCartaInput = document.getElementById("admin-carta");
 
@@ -119,7 +101,6 @@
             let senha = prompt("Senha admin:");
             if (senha === "kitty_2008") {
                 adminPanel.style.display = "block";
-                carregarMensagensAdmin();
                 adminCartaInput.value = textoCarta.innerHTML.replace(/<br\s*\/?>/mg, "\n");
             } else {
                 alert("Senha Incorreta! ❌");
@@ -130,71 +111,7 @@
             adminPanel.style.display = "none";
         }
 
-        /* SISTEMA DE RECADOS */
-        function sendMessage() {
-            const nome = document.getElementById("guestName").value;
-            const mensagem = document.getElementById("guestMessage").value;
-
-            if (nome.trim() === "" || mensagem.trim() === "") {
-                alert("Preencha tudo 💗");
-                return;
-            }
-
-            let mensagens = JSON.parse(localStorage.getItem("mensagens")) || [];
-            mensagens.push({ nome: nome, mensagem: mensagem });
-            localStorage.setItem("mensagens", JSON.stringify(mensagens));
-
-            document.getElementById("guestName").value = "";
-            document.getElementById("guestMessage").value = "";
-            
-            mostrar();
-            if (adminPanel.style.display === "block") carregarMensagensAdmin();
-        }
-
-        function mostrar() {
-            let mensagens = JSON.parse(localStorage.getItem("mensagens")) || [];
-            let container = document.getElementById("messagesContainer");
-            container.innerHTML = "";
-
-            // Clona e inverte para mostrar as mais recentes primeiro
-            [...mensagens].reverse().forEach(function(msg) {
-                container.innerHTML += `
-                    <div class="message">
-                        <h3>${msg.nome}</h3>
-                        <p>${msg.mensagem}</p>
-                    </div>
-                `;
-            });
-        }
-
-        /* FUNÇÕES DE GERENCIAMENTO DO ADMIN */
-        function carregarMensagensAdmin() {
-            let mensagens = JSON.parse(localStorage.getItem("mensagens")) || [];
-            adminMensagens.innerHTML = "";
-            
-            if(mensagens.length === 0) {
-                adminMensagens.innerHTML = "<p>Nenhuma mensagem ainda.</p>";
-                return;
-            }
-
-            mensagens.forEach(function(msg, index) {
-                adminMensagens.innerHTML += `
-                    <div class="admin-msg-item" style="border-bottom: 1px solid #ffccd5; padding: 5px 0;">
-                        <strong>${msg.nome}:</strong> ${msg.mensagem} 
-                        <button onclick="deletarMensagem(${index})" style="background:#ff4d6d; padding:2px 5px; font-size:12px;">Excluir</button>
-                    </div>
-                `;
-            });
-        }
-
-        function deletarMensagem(index) {
-            let mensagens = JSON.parse(localStorage.getItem("mensagens")) || [];
-            mensagens.splice(index, 1);
-            localStorage.setItem("mensagens", JSON.stringify(mensagens));
-            carregarMensagensAdmin();
-            mostrar();
-        }
-
+        /* SALVAR CARTA EDITADA */
         function salvarCarta() {
             const novoTexto = adminCartaInput.value.replace(/\n/g, "<br>");
             localStorage.setItem("cartaTexto", novoTexto);
